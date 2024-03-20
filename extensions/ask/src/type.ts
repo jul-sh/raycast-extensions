@@ -103,6 +103,7 @@ export interface ChatViewProps extends ChangePromptProp {
 export interface ConfigurationPreferences {
   apiKey: string;
   apiEndpoint: string;
+  defaultModel: string;
 }
 
 export interface CSVPrompt {

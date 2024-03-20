@@ -1,35 +1,25 @@
 import { getPreferenceValues, LocalStorage, showToast, Toast } from "@raycast/api";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Prompt, PromptHook } from "../type";
+import { ConfigurationPreferences, Prompt, PromptHook } from "../type";
 import { useChatGPT } from "./useChatGPT";
 import { apiPreferences } from "../utils";
 
-export const DEFAULT_MODEL: Prompt = {
-  id: uuidv4(),
-  updated_at: new Date().toISOString(),
-  created_at: new Date().toISOString(),
-  name: "Ask " + apiPreferences().models[0],
-  prompt: "You are a helpful assistant.",
-  option: apiPreferences().models[0],
-  apiEndpoint: apiPreferences().url,
-  apiEndpointName: apiPreferences().name,
-  temperature: "1",
-};
+const preferences = getPreferenceValues<ConfigurationPreferences>();
 
 export function defaultPrompts(): Prompt[] {
   return [
-    ...apiPreferences().models.map((model) => ({
+    {
       id: uuidv4(),
       updated_at: new Date().toISOString(),
       created_at: new Date().toISOString(),
-      name: "Ask " + model,
+      name: "Ask " + preferences.defaultModel,
       prompt: "You are a helpful assistant.",
-      option: model,
-      apiEndpoint: apiPreferences().url,
-      apiEndpointName: apiPreferences().name,
+      option: preferences.defaultModel,
+      apiEndpoint: preferences.apiEndpoint,
+      apiEndpointName: "Main API",
       temperature: "1",
-    })),
+    },
   ];
 }
 
@@ -114,8 +104,7 @@ export function usePrompt(): PromptHook {
       title: "Clearing your prompts ...",
       style: Toast.Style.Animated,
     });
-    const newPrompts: Prompt[] = data.filter((oldPrompt) => oldPrompt.id === DEFAULT_MODEL.id);
-    setData(newPrompts);
+    setData([]);
     toast.title = "Prompts cleared!";
     toast.style = Toast.Style.Success;
   }, [setData]);

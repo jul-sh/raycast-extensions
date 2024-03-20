@@ -1,6 +1,5 @@
 import { Action, ActionPanel, Form, Icon, useNavigation } from "@raycast/api";
 import { useState } from "react";
-import { DEFAULT_MODEL } from "../../hooks/usePrompt";
 import { Prompt, QuestionFormProps } from "../../type";
 //
 export const QuestionForm = ({

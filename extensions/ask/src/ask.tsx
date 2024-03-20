@@ -7,7 +7,7 @@ import { PreferencesActionSection } from "./actions/preferences";
 import { useAutoSaveConversation } from "./hooks/useAutoSaveConversation";
 import { useChat } from "./hooks/useChat";
 import { useConversations } from "./hooks/useConversations";
-import { DEFAULT_MODEL, usePrompt } from "./hooks/usePrompt";
+import { usePrompt } from "./hooks/usePrompt";
 import { useQuestion } from "./hooks/useQuestion";
 import { useSavedChat } from "./hooks/useSavedChat";
 import { Chat, Conversation, Prompt } from "./type";
@@ -15,7 +15,7 @@ import { ChatView } from "./views/chat";
 import { PromptDropdown } from "./views/prompt/dropdown";
 import { QuestionForm } from "./views/question/form";
 
-export default function Ask(props: { initialQuestion?: string; conversation?: Conversation }) {
+export default function Ask(props: { initialQuestion?: string; conversation: Conversation }) {
   const conversations = useConversations();
   const prompts = usePrompt();
   const savedChats = useSavedChat();
@@ -26,21 +26,11 @@ export default function Ask(props: { initialQuestion?: string; conversation?: Co
     disableAutoLoad: props.conversation ? true : false,
   });
 
-  const [conversation, setConversation] = useState<Conversation>(
-    props.conversation ?? {
-      id: uuidv4(),
-      chats: [],
-      prompt: DEFAULT_MODEL,
-      updated_at: "",
-      created_at: new Date().toISOString(),
-    }
-  );
+  const [conversation, setConversation] = useState<Conversation>(props.conversation);
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
-  const [selectedPromp, setSelectedPromp] = useState<Prompt>(
-    props.conversation ? props.conversation.prompt : DEFAULT_MODEL
-  );
+  const [selectedPromp, setSelectedPromp] = useState<Prompt>(props.conversation.prompt);
 
   const [isAutoFullInput] = useState(() => {
     return getPreferenceValues<{
@@ -84,7 +74,7 @@ export default function Ask(props: { initialQuestion?: string; conversation?: Co
 
   useEffect(() => {
     if (prompts.data && conversation.chats.length === 0) {
-      const defaultUserPrompt = prompts.data.find((x) => x.id === DEFAULT_MODEL.id) ?? conversation.prompt;
+      const defaultUserPrompt = conversation.prompt;
       setConversation({ ...conversation, prompt: defaultUserPrompt, updated_at: new Date().toISOString() });
     }
   }, [prompts.data]);

@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { defaultBaseSortFn, matchSorter } from "match-sorter";
-import { Action, ActionPanel, Icon, List, openExtensionPreferences, useNavigation } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Icon,
+  List,
+  getPreferenceValues,
+  openExtensionPreferences,
+  useNavigation,
+} from "@raycast/api";
 import { usePrompt } from "./hooks/usePrompt";
-import { Conversation, Prompt, PromptHook } from "./type";
+import { ConfigurationPreferences, Conversation, Prompt, PromptHook } from "./type";
 import { PrimaryAction, DestructiveAction } from "./actions";
 import { PromptForm } from "./views/prompt/form";
 import { v4 as uuidv4 } from "uuid";
 import Ask from "./ask";
-import { apiPreferences } from "./utils";
 
 export default function PromptCommand() {
   let prompts = usePrompt();
@@ -42,6 +49,7 @@ export default function PromptCommand() {
 
   useEffect(() => {
     if (matchingActions.length == 0 && matchingPrompts.length == 0) {
+      const preferences = getPreferenceValues<ConfigurationPreferences>();
       let conversation: Conversation = {
         id: uuidv4(),
         chats: [],
@@ -51,9 +59,9 @@ export default function PromptCommand() {
           created_at: new Date().toISOString(),
           name: searchText,
           prompt: searchText,
-          option: apiPreferences().models[0],
-          apiEndpoint: apiPreferences().url,
-          apiEndpointName: apiPreferences().name,
+          option: preferences.defaultModel,
+          apiEndpoint: preferences.apiEndpoint,
+          apiEndpointName: "Main API",
           temperature: "1",
         },
         updated_at: "",

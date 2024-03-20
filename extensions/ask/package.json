@@ -57,12 +57,28 @@
   ],
   "preferences": [
     {
+      "description": "API endpoint",
+      "name": "apiEndpoint",
+      "required": true,
+      "title": "API Endpoint",
+      "type": "textfield",
+      "default": "https://openrouter.ai/api/v1"
+    },
+    {
       "name": "apiKey",
       "label": "API Key",
       "description": "Enter your personal API Key",
       "type": "password",
       "title": "API Key",
       "required": true
+    },
+    {
+      "description": "The AI model to use by default",
+      "name": "defaultModel",
+      "required": true,
+      "title": "Default model",
+      "type": "textfield",
+      "default": "anthropic/claude-3-opus:beta"
     },
     {
       "name": "isAutoSaveConversation",
