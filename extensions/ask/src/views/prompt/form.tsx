@@ -1,10 +1,10 @@
 import { Action, ActionPanel, Form, getPreferenceValues, Icon, showToast, Toast, useNavigation } from "@raycast/api";
 import { FormValidation, useFetch, useForm } from "@raycast/utils";
 import { v4 as uuidv4 } from "uuid";
-import { CSVPrompt, Prompt, PromptHook } from "../../type";
-import { apiPreferences } from "../../utils";
+import { ConfigurationPreferences, Prompt, PromptHook } from "../../type";
 
 export const PromptForm = (props: { prompt?: Prompt; use: { prompts: PromptHook }; name?: string }) => {
+  const preferences = getPreferenceValues<ConfigurationPreferences>();
   const { use, prompt } = props;
   const { pop } = useNavigation();
 
@@ -45,7 +45,7 @@ export const PromptForm = (props: { prompt?: Prompt; use: { prompts: PromptHook 
     initialValues: {
       name: prompt?.name ?? "",
       temperature: prompt?.temperature.toString() ?? "1",
-      option: prompt?.option ?? "openrouter/auto",
+      option: prompt?.option ?? preferences.defaultModel,
       prompt: prompt?.prompt ?? "",
     },
   });
@@ -74,13 +74,7 @@ export const PromptForm = (props: { prompt?: Prompt; use: { prompts: PromptHook 
         placeholder="Set your sampling temperature (0 - 2)"
         {...itemProps.temperature}
       />
-      <Form.Dropdown title="Model" info="Select a model" placeholder="Choose model option" {...itemProps.option}>
-        <Form.Dropdown.Section title={apiPreferences().name}>
-          {MODEL_OPTIONS.map((option) => (
-            <Form.Dropdown.Item value={option} title={option} key={option} />
-          ))}
-        </Form.Dropdown.Section>
-      </Form.Dropdown>
+      <Form.TextField title="Model" placeholder="Name your prompt" {...itemProps.option} />
     </Form>
   );
 };

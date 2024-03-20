@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { ConfigurationPreferences, Prompt, PromptHook } from "../type";
 import { useChatGPT } from "./useChatGPT";
-import { apiPreferences } from "../utils";
 
 const preferences = getPreferenceValues<ConfigurationPreferences>();
 
@@ -26,9 +25,6 @@ export function defaultPrompts(): Prompt[] {
 export function usePrompt(): PromptHook {
   const [data, setData] = useState<Prompt[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [isFetching, setFetching] = useState<boolean>(true);
-  const gpt = useChatGPT();
-  const option = apiPreferences().models;
 
   useEffect(() => {
     (async () => {
@@ -110,7 +106,7 @@ export function usePrompt(): PromptHook {
   }, [setData]);
 
   return useMemo(
-    () => ({ data, isLoading, option, add, update, remove, clear, isFetching }),
-    [data, isLoading, option, add, update, remove, clear, isFetching]
+    () => ({ data, isLoading, option: [preferences.defaultModel], add, update, remove, clear }),
+    [data, isLoading, add, update, remove, clear]
   );
 }

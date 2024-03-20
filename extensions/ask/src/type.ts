@@ -65,7 +65,6 @@ export type QuestionHook = BaseHook<string> & { update: PromiseFunctionWithOneAr
 export type PromptHook = Hook<Prompt> & {
   update: PromiseFunctionWithOneArg<Prompt>;
   option: Prompt["option"][];
-  isFetching: boolean;
 };
 
 export interface ChatHook {

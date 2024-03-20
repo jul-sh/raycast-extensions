@@ -42,16 +42,3 @@ export function chatTransfomer(chat: Chat[], prompt: string): Message[] {
   });
   return messages;
 }
-
-export function apiPreferences(): { models: string[]; name: string; url: string } {
-  return {
-    models: [
-      "anthropic/claude-3-opus:beta",
-      "openai/gpt-4-turbo-preview",
-      "cognitivecomputations/dolphin-mixtral-8x7b",
-      "openrouter/auto",
-    ],
-    name: "OpenRouter",
-    url: "https://openrouter.ai/api/v1",
-  };
-}
