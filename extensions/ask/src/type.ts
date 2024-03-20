@@ -94,7 +94,6 @@ export interface QuestionFormProps extends ChangePromptProp {
 export interface ChatViewProps extends ChangePromptProp {
   data: Chat[];
   question: string;
-  isAutoSaveConversation: boolean;
   conversation: Conversation;
   setConversation: Set<Conversation>;
   use: { chats: ChatHook; conversations: ConversationsHook; savedChats: SavedChatHook };

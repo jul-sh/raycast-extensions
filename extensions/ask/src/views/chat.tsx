@@ -3,7 +3,6 @@ import { PrimaryAction, TextToSpeechAction } from "../actions";
 import { CopyActionSection } from "../actions/copy";
 import { FormInputActionSection } from "../actions/form-input";
 import { PreferencesActionSection } from "../actions/preferences";
-import { SaveActionSection } from "../actions/save";
 import { Chat, ChatViewProps } from "../type";
 import { AnswerDetailView } from "./answer-detail";
 import { EmptyView } from "./empty";
@@ -15,7 +14,6 @@ export const ChatView = ({
   use,
   prompts,
   selectedPrompt,
-  isAutoSaveConversation,
   onPromptChange,
 }: ChatViewProps) => {
   const sortedChats = data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -27,16 +25,6 @@ export const ChatView = ({
       ) : selectedChat.answer && use.chats.selectedChatId === selectedChat.id ? (
         <>
           <CopyActionSection answer={selectedChat.answer} question={selectedChat.question} />
-          <SaveActionSection
-            onSaveAnswerAction={() => use.savedChats.add(selectedChat)}
-            onSaveConversationAction={
-              isAutoSaveConversation
-                ? undefined
-                : use.conversations.data.find((x) => x.id === conversation.id)
-                ? undefined
-                : () => use.conversations.add(conversation)
-            }
-          />
           <ActionPanel.Section title="Output">
             <TextToSpeechAction content={selectedChat.answer} />
           </ActionPanel.Section>

@@ -19,7 +19,6 @@ export default function Ask(props: { initialQuestion?: string; conversation: Con
   const conversations = useConversations();
   const prompts = usePrompt();
   const savedChats = useSavedChat();
-  const isAutoSaveConversation = useAutoSaveConversation();
   const chats = useChat<Chat>(props.conversation ? props.conversation.chats : []);
   const question = useQuestion({
     initialQuestion: props.initialQuestion ? props.initialQuestion : "",
@@ -63,7 +62,7 @@ export default function Ask(props: { initialQuestion?: string; conversation: Con
   }, [prompts.data, question.data]);
 
   useEffect(() => {
-    if ((props.conversation?.id !== conversation.id || conversations.data.length === 0) && isAutoSaveConversation) {
+    if (props.conversation?.id !== conversation.id || conversations.data.length === 0) {
       conversations.add(conversation);
     }
   }, []);
@@ -147,7 +146,6 @@ export default function Ask(props: { initialQuestion?: string; conversation: Con
       <ChatView
         data={chats.data}
         question={question.data}
-        isAutoSaveConversation={isAutoSaveConversation}
         setConversation={setConversation}
         use={{ chats, conversations, savedChats }}
         conversation={conversation}
