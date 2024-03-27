@@ -15,13 +15,14 @@ import * as openAiApi from "../utils/openai-api";
 import * as anthropicApi from "../utils/anthropic-api";
 import { ApiArgs, ConfigurationPreferences } from "../type";
 
-const apiType = getPreferenceValues<ConfigurationPreferences>().apiType;
+const preferences = getPreferenceValues<ConfigurationPreferences>();
+const apiType = preferences.apiType;
 const api =
   apiType === "gemini"
     ? geminiApi.promptStream
     : apiType === "anthropic"
-    ? anthropicApi.promptStream
-    : openAiApi.promptStream;
+      ? anthropicApi.promptStream
+      : openAiApi.promptStream;
 
 export default function useResponse({
   systemPrompt,
@@ -54,7 +55,7 @@ export default function useResponse({
         message: `${(Date.now() - start) / 1000} seconds`,
       });
     } catch (e) {
-      console.log(e);
+      console.error("eeeeeh", e);
       setMarkdownResponse("## Could not access Gemini.\n\nIt's API failed when responding.");
       await showToast({
         style: Toast.Style.Failure,
@@ -84,7 +85,7 @@ export default function useResponse({
       populateResponse({
         prompt: `${systemPrompt}\n${selectedText}\nIt is very important that you only provide the final output without any additional comments or remarks`,
         temperature: 0,
-        model: "",
+        model: preferences.defaultModel,
       });
     })();
   }, []);
