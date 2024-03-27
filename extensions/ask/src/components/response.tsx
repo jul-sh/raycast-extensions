@@ -12,11 +12,15 @@ import {
 import { useState, useEffect } from "react";
 import * as geminiApi from "../utils/gemini-api";
 import * as openAiApi from "../utils/openai-api";
+import * as anthropicApi from "../utils/anthropic-api";
 import { ApiArgs, ConfigurationPreferences } from "../type";
 
+const apiType = getPreferenceValues<ConfigurationPreferences>().apiType;
 const api =
-  getPreferenceValues<ConfigurationPreferences>().apiType === "gemini"
+  apiType === "gemini"
     ? geminiApi.promptStream
+    : apiType === "anthropic"
+    ? anthropicApi.promptStream
     : openAiApi.promptStream;
 
 export default function useResponse({

@@ -26,8 +26,12 @@
       "required": true,
       "title": "API Type",
       "type": "dropdown",
-      "default": "openai",
+      "default": "anthropic",
       "data": [
+        {
+          "title": "Anthropic",
+          "value": "anthropic"
+        },
         {
           "title": "OpenAI Spec (OpenAi, OpenRouter, Mixtral)",
           "value": "openai"
@@ -57,12 +61,13 @@
       "description": "AI Model to use for new prompts",
       "name": "defaultModel",
       "required": true,
-      "default": "anthropic/claude-3-opus:beta",
+      "default": "claude-3-opus-20240229",
       "title": "Model",
       "type": "textfield"
     }
   ],
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.19.0",
     "@google/generative-ai": "^0.3.1",
     "@raycast/api": "^1.62.0",
     "@raycast/utils": "^1.9.0",

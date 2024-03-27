@@ -91,24 +91,28 @@ export function usePrompt(): PromptHook {
   );
 
   const update = useCallback(
-    async (prompt: Prompt) => {
+    async (prompt: Prompt, alert: boolean) => {
       let toastPromise;
       setData((prev) => {
         return prev.map((x) => {
           if (x.id === prompt.id) {
-            toastPromise = showToast({
-              title: "Updating your prompt...",
-              style: Toast.Style.Animated,
-            });
+            if (alert) {
+              toastPromise = showToast({
+                title: "Updating your prompt...",
+                style: Toast.Style.Animated,
+              });
+            }
             return prompt;
           }
           return x;
         });
       });
-      const toast = await toastPromise;
-      if (toast !== undefined) {
-        (toast as Toast).title = "Prompt updated!";
-        (toast as Toast).style = Toast.Style.Success;
+      if (alert) {
+        const toast = await toastPromise;
+        if (toast !== undefined) {
+          (toast as Toast).title = "Prompt updated!";
+          (toast as Toast).style = Toast.Style.Success;
+        }
       }
     },
     [setData, data]

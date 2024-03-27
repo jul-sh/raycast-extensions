@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { matchSorter } from "match-sorter";
 import { Action, ActionPanel, Icon, List, openExtensionPreferences, useNavigation } from "@raycast/api";
 import { usePrompt } from "./hooks/usePrompt";
-import { Prompt, PromptHook } from "./type";
+import { Chat, Conversation, Prompt, PromptHook } from "./type";
 import { DestructiveAction } from "./components/actions";
 import { PromptForm } from "./components/prompt-form";
 import Ask from "./ask";
@@ -59,60 +59,68 @@ export default function PromptCommand() {
       searchText={searchText}
       onSearchTextChange={setSearchText}
     >
-      <List.Section title="Prompts">
-        {matchingPrompts.map((prompt, index) => {
-          return (
-            <PromptItem
-              key={prompt.name}
-              prompt={prompt}
-              index={index}
-              update={update}
-              remove={remove}
-              clear={clear}
-              promptHook={promptHook}
-            />
-          );
-        })}
-      </List.Section>
-      {!isLoading && (
-        <List.Section title="Actions">
-          {matchingActions.map((action) => (
-            <List.Item
-              key={action.name}
-              icon={Icon.PlusCircleFilled}
-              title={action.name}
-              actions={
-                <ActionPanel>
-                  <Action icon={Icon.ArrowRight} title={action.name} onAction={action.onAction} />
-                  <ActionPanel.Section title="General">
-                    <DestructiveAction
-                      title="Reset All"
-                      dialog={{
-                        title: "Are you sure? This will delete all your prompts.",
-                      }}
-                      onAction={() => promptHook.clear()}
-                    />
-                    <Action icon={Icon.Gear} title="Open Extension Preferences" onAction={openExtensionPreferences} />
-                  </ActionPanel.Section>
-                </ActionPanel>
-              }
-            />
-          ))}
-          <List.Item
-            icon={Icon.ArrowRight}
-            title={"Use search text as prompt"}
-            actions={
-              <ActionPanel>
-                <Action
-                  icon={Icon.ArrowRight}
-                  title="Use search text as prompt"
-                  onAction={() => push(<Ask ignoreNoSelectedText systemPrompt={searchText} />)}
+      {
+        <>
+          <List.Section title="Prompts">
+            {matchingPrompts.map((prompt, index) => {
+              return (
+                <PromptItem
+                  key={prompt.name}
+                  prompt={prompt}
+                  index={index}
+                  update={(prompt) => update(prompt, false)}
+                  remove={remove}
+                  clear={clear}
+                  promptHook={promptHook}
                 />
-              </ActionPanel>
-            }
-          />
-        </List.Section>
-      )}
+              );
+            })}
+          </List.Section>
+          {!isLoading && (
+            <List.Section title="Actions">
+              {matchingActions.map((action) => (
+                <List.Item
+                  key={action.name}
+                  icon={Icon.PlusCircleFilled}
+                  title={action.name}
+                  actions={
+                    <ActionPanel>
+                      <Action icon={Icon.ArrowRight} title={action.name} onAction={action.onAction} />
+                      <ActionPanel.Section title="General">
+                        <DestructiveAction
+                          title="Reset All"
+                          dialog={{
+                            title: "Are you sure? This will delete all your prompts.",
+                          }}
+                          onAction={() => promptHook.clear()}
+                        />
+                        <Action
+                          icon={Icon.Gear}
+                          title="Open Extension Preferences"
+                          onAction={openExtensionPreferences}
+                        />
+                      </ActionPanel.Section>
+                    </ActionPanel>
+                  }
+                />
+              ))}
+              <List.Item
+                icon={Icon.ArrowRight}
+                title={"Use search text as prompt"}
+                actions={
+                  <ActionPanel>
+                    <Action
+                      icon={Icon.ArrowRight}
+                      title="Use search text as prompt"
+                      onAction={() => push(<Ask ignoreNoSelectedText systemPrompt={searchText} />)}
+                    />
+                  </ActionPanel>
+                }
+              />
+            </List.Section>
+          )}
+        </>
+      }
     </List>
   );
 }
@@ -176,7 +184,6 @@ function PromptItem(props: {
           </ActionPanel.Section>
         </ActionPanel>
       }
-      accessories={[{ tag: props.prompt.option }]}
     />
   );
 }

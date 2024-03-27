@@ -16,10 +16,7 @@ export interface SavedChat extends Chat {
 
 export interface Conversation {
   id: string;
-  prompt: Prompt;
   chats: Chat[];
-  updated_at: string;
-  created_at: string;
 }
 
 export enum PromptType {
@@ -33,6 +30,7 @@ export interface PromptPrimitive {
 }
 
 export enum ApiType {
+  anthropic = "anthropic",
   gemini = "gemini",
   openai = "openai",
 }
@@ -80,7 +78,7 @@ export interface PromptHook {
   add: (prompt: Prompt) => Promise<void>;
   remove: (prompt: Prompt) => Promise<void>;
   clear: () => Promise<void>;
-  update: (prompt: Prompt) => Promise<void>;
+  update: (prompt: Prompt, alert: boolean) => Promise<void>;
   option: Prompt["option"][];
 }
 
