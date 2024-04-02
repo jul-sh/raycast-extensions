@@ -14,7 +14,7 @@ export const PromptForm = (props: { prompt?: Prompt; hooks: { promptHook: Prompt
         updatedPrompt = { ...updatedPrompt, temperature: updatedPrompt.temperature };
       }
       if (prompt) {
-        hooks.promptHook.update({ ...updatedPrompt, id: prompt.id });
+        hooks.promptHook.update({ ...updatedPrompt, id: prompt.id }, true);
       } else {
         hooks.promptHook.add(updatedPrompt);
       }

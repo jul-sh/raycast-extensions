@@ -21,8 +21,8 @@ const api =
   apiType === "gemini"
     ? geminiApi.promptStream
     : apiType === "anthropic"
-      ? anthropicApi.promptStream
-      : openAiApi.promptStream;
+    ? anthropicApi.promptStream
+    : openAiApi.promptStream;
 
 export default function useResponse({
   systemPrompt,
@@ -83,7 +83,8 @@ export default function useResponse({
         }
       }
       populateResponse({
-        prompt: `${systemPrompt}\n${selectedText}\nIt is very important that you only provide the final output without any additional comments or remarks`,
+        systemPrompt,
+        selectedText,
         temperature: 0,
         model: preferences.defaultModel,
       });

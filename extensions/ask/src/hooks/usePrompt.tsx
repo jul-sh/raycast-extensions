@@ -27,7 +27,7 @@ export function defaultPrompts(): Prompt[] {
     }),
     promptFromPrimitive({
       name: "Fix spelling and grammar",
-      system_prompt: "Fix spelling, grammar and punctuation. ONLY write the corrected version without explanations.",
+      system_prompt: "Fix spelling, grammar and punctuation.",
       temperature: "0",
     }),
     promptFromPrimitive({
@@ -45,7 +45,7 @@ export function defaultPrompts(): Prompt[] {
     promptFromPrimitive({
       name: "Improve writing",
       system_prompt:
-        "Act as a world class content writer. Improve the text with the following instructions: Improve clarity, Break up overly long sentences, Reduce repetition, Keep the meaning and tone of voice same, Do NOT write any explanations.",
+        "Act as a world class content writer. Improve the text with the following instructions: Improve clarity, Break up overly long sentences, Reduce repetition, Keep the meaning and tone of voice same.",
       temperature: "0",
     }),
     promptFromPrimitive({

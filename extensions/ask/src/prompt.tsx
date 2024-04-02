@@ -44,7 +44,7 @@ export default function PromptCommand() {
   //       <QuestionForm
   //         initialQuestion={searchText}
   //         onSubmit={(prompt) => {
-  //           push(<Ask systemPrompt={prompt} />);
+  //           push(<Ask prompt={prompt} />);
   //         }}
   //       />
   //     );
@@ -112,7 +112,7 @@ export default function PromptCommand() {
                     <Action
                       icon={Icon.ArrowRight}
                       title="Use search text as prompt"
-                      onAction={() => push(<Ask ignoreNoSelectedText systemPrompt={searchText} />)}
+                      onAction={() => push(<Ask ignoreNoSelectedText prompt={searchText} />)}
                     />
                   </ActionPanel>
                 }
@@ -146,7 +146,7 @@ function PromptItem(props: {
             title="Continue with Prompt"
             onAction={() => {
               props.update({ ...props.prompt, last_used_100ms_epoch: new Date().valueOf() / 100 });
-              push(<Ask systemPrompt={props.prompt.system_prompt} />);
+              push(<Ask prompt={props.prompt.system_prompt} />);
             }}
           />
           <ActionPanel.Section title="Edit">
