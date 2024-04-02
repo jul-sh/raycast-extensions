@@ -10,9 +10,7 @@ export async function* promptStream(args: ApiArgs): AsyncGenerator<string, void,
     generationConfig: { temperature: args.temperature },
   });
 
-  const result = await model.generateContentStream(
-    `Instructions:\n${args.systemPrompt}\n\nApply the instructions to this text:\n${args.selectedText}`
-  );
+  const result = await model.generateContentStream(`Instructions:\n${args.systemPrompt}\n\nMessage:\n${args.prompt}`);
 
   for await (const chunk of result.stream) {
     yield chunk.text();

@@ -16,7 +16,7 @@ export async function* promptStream(args: ApiArgs): AsyncGenerator<string, void,
       temperature: Number(args.temperature),
       messages: [
         { role: "system", content: args.systemPrompt },
-        { role: "user", content: args.selectedText },
+        { role: "user", content: args.prompt },
       ],
       stream: true,
     },

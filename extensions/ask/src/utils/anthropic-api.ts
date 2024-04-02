@@ -18,7 +18,7 @@ export async function* promptStream(args: ApiArgs): AsyncGenerator<string, void,
     messages: [
       {
         role: "user",
-        content: args.selectedText,
+        content: args.prompt,
       },
     ],
   });

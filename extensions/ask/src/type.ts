@@ -131,7 +131,7 @@ export interface CSVPrompt {
 
 export interface ApiArgs {
   systemPrompt: string;
-  selectedText: string;
+  prompt: string;
   temperature: number;
   model: string;
 }
