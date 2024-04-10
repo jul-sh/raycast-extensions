@@ -1,3 +1,4 @@
+import "./utils/polyfills";
 import { useEffect, useState } from "react";
 import { matchSorter } from "match-sorter";
 import { Action, ActionPanel, Icon, List, openExtensionPreferences, useNavigation } from "@raycast/api";
@@ -5,8 +6,7 @@ import { usePrompt } from "./hooks/usePrompt";
 import { Chat, Conversation, Prompt, PromptHook } from "./type";
 import { DestructiveAction } from "./components/actions";
 import { PromptForm } from "./components/prompt-form";
-import Ask from "./ask";
-import { QuestionForm } from "./components/question-form";
+import ResponseComponent from "./components/response";
 
 export default function PromptCommand() {
   const promptHook = usePrompt();
@@ -112,7 +112,7 @@ export default function PromptCommand() {
                     <Action
                       icon={Icon.ArrowRight}
                       title="Use search text as prompt"
-                      onAction={() => push(<Ask ignoreNoSelectedText prompt={searchText} />)}
+                      onAction={() => push(<ResponseComponent prompt={searchText} />)}
                     />
                   </ActionPanel>
                 }
@@ -146,7 +146,7 @@ function PromptItem(props: {
             title="Continue with Prompt"
             onAction={() => {
               props.update({ ...props.prompt, last_used_100ms_epoch: new Date().valueOf() / 100 });
-              push(<Ask prompt={props.prompt.system_prompt} />);
+              push(<ResponseComponent prompt={props.prompt.system_prompt} />);
             }}
           />
           <ActionPanel.Section title="Edit">

@@ -1,4 +1,4 @@
-import { Detail, ActionPanel, Action, Toast, showToast, Keyboard, getPreferenceValues } from "@raycast/api";
+import { Detail, ActionPanel, Action, Toast, showToast, Keyboard, getPreferenceValues, getSelectedText, popToRoot } from "@raycast/api";
 import { useState, useEffect } from "react";
 import * as geminiApi from "../utils/gemini-api";
 import * as openAiApi from "../utils/openai-api";
@@ -14,12 +14,8 @@ const apiMap = {
 const api = apiMap[preferences.apiType];
 
 export default function ResponseComponent({
-  systemPrompt,
-  allowPaste = false,
   prompt,
 }: {
-  systemPrompt: string;
-  allowPaste: boolean;
   prompt: string;
 }) {
   const [markdownResponse, setMarkdownResponse] = useState("");
@@ -27,18 +23,39 @@ export default function ResponseComponent({
 
   useEffect(() => {
     (async () => {
+      let selectedText;
+      try {
+        selectedText = await getSelectedText();
+      } catch (e) {
+        console.error(e);
+        await popToRoot();
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Could not get the selected text",
+        });
+        return;
+      }
+
+      const start = Date.now();
+
+
+      let promptApiArgs = selectedText
+        ? {
+          systemPrompt: `${prompt} ONLY return the updated text, without explanations.`,
+          prompt: selectedText,
+        }
+        : { systemPrompt: "You're a helpful assistant", prompt: prompt };
+
+      const apiArgs: ApiArgs = {
+        ...promptApiArgs,
+        temperature: 0,
+        model: preferences.defaultModel,
+      };
+
       await showToast({
         style: Toast.Style.Animated,
         title: "Waiting for response...",
       });
-
-      const start = Date.now();
-      const apiArgs: ApiArgs = {
-        systemPrompt,
-        prompt,
-        temperature: 0,
-        model: preferences.defaultModel,
-      };
 
       try {
         for await (const responseChunk of api(apiArgs)) {
@@ -69,7 +86,7 @@ export default function ResponseComponent({
       actions={
         !isLoading && (
           <ActionPanel>
-            {allowPaste && <Action.Paste content={markdownResponse} />}
+            <Action.Paste content={markdownResponse} />
             <Action.CopyToClipboard shortcut={Keyboard.Shortcut.Common.Copy} content={markdownResponse} />
           </ActionPanel>
         )
