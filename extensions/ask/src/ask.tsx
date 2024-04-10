@@ -9,9 +9,9 @@ export default function Ask(props: { prompt: string; ignoreNoSelectedText?: bool
 
   let resProps = selectedText
     ? {
-        systemPrompt: `${props.prompt} ONLY return the updated text, without explanations.`,
-        prompt: selectedText,
-      }
+      systemPrompt: `${props.prompt} ONLY return the updated text, without explanations.`,
+      prompt: selectedText,
+    }
     : { systemPrompt: "You're a helpful assistant", prompt: props.prompt };
 
   useEffect(() => {
@@ -30,9 +30,7 @@ export default function Ask(props: { prompt: string; ignoreNoSelectedText?: bool
           return;
         }
       } finally {
-        if (props.ignoreNoSelectedText) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       }
     })();
   }, []);
