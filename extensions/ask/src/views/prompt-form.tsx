@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Form, getPreferenceValues, Icon, useNavigation } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { ConfigurationPreferences, Prompt, PromptHook } from "../type";
-import { DestructiveAction } from "./actions";
+import { DestructiveAction } from "../components/actions";
 
 export const PromptForm = (props: { prompt?: Prompt; hooks: { promptHook: PromptHook }; name?: string }) => {
   const preferences = getPreferenceValues<ConfigurationPreferences>();

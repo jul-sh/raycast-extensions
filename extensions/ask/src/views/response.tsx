@@ -1,4 +1,14 @@
-import { Detail, ActionPanel, Action, Toast, showToast, Keyboard, getPreferenceValues, getSelectedText, popToRoot } from "@raycast/api";
+import {
+  Detail,
+  ActionPanel,
+  Action,
+  Toast,
+  showToast,
+  Keyboard,
+  getPreferenceValues,
+  getSelectedText,
+  popToRoot,
+} from "@raycast/api";
 import { useState, useEffect } from "react";
 import * as geminiApi from "../utils/gemini-api";
 import * as openAiApi from "../utils/openai-api";
@@ -13,11 +23,7 @@ const apiMap = {
 };
 const api = apiMap[preferences.apiType];
 
-export default function ResponseComponent({
-  prompt,
-}: {
-  prompt: string;
-}) {
+export default function ResponseComponent({ prompt }: { prompt: string }) {
   const [markdownResponse, setMarkdownResponse] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,8 +44,7 @@ export default function ResponseComponent({
 
       const start = Date.now();
 
-
-      let promptApiArgs = selectedText
+      const promptApiArgs = selectedText
         ? {
           systemPrompt: `${prompt} ONLY return the updated text, without explanations.`,
           prompt: selectedText,

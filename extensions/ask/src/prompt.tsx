@@ -1,17 +1,17 @@
 import "./utils/polyfills";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { matchSorter } from "match-sorter";
 import { Action, ActionPanel, Icon, List, openExtensionPreferences, useNavigation } from "@raycast/api";
 import { usePrompt } from "./hooks/usePrompt";
-import { Chat, Conversation, Prompt, PromptHook } from "./type";
+import { Prompt, PromptHook } from "./type";
 import { DestructiveAction } from "./components/actions";
-import { PromptForm } from "./components/prompt-form";
-import ResponseComponent from "./components/response";
+import { PromptForm } from "./views/prompt-form";
+import ResponseComponent from "./views/response";
 
 export default function PromptCommand() {
   const promptHook = usePrompt();
   const { data, isLoading, update, remove, clear } = promptHook;
-  const { push, pop } = useNavigation();
+  const { push } = useNavigation();
 
   const [searchText, setSearchText] = useState("");
 
@@ -38,17 +38,15 @@ export default function PromptCommand() {
     keys: ["name"],
   });
 
+  const useSearchTextAsPrompt = () => {
+    const capturedSearchText = searchText;
+    setSearchText("");
+    push(<ResponseComponent prompt={capturedSearchText} />);
+  };
+
   // useEffect(() => {
   //   if (matchingActions.length == 0 && matchingPrompts.length == 0) {
-  //     push(
-  //       <QuestionForm
-  //         initialQuestion={searchText}
-  //         onSubmit={(prompt) => {
-  //           push(<Ask prompt={prompt} />);
-  //         }}
-  //       />
-  //     );
-  //     setSearchText("");
+  //     useSearchTextAsPrompt()
   //   }
   // }, [matchingActions, matchingPrompts, searchText]);
 
@@ -109,11 +107,7 @@ export default function PromptCommand() {
                 title={"Use search text as prompt"}
                 actions={
                   <ActionPanel>
-                    <Action
-                      icon={Icon.ArrowRight}
-                      title="Use search text as prompt"
-                      onAction={() => push(<ResponseComponent prompt={searchText} />)}
-                    />
+                    <Action icon={Icon.ArrowRight} title="Use Search Text as Prompt" onAction={useSearchTextAsPrompt} />
                   </ActionPanel>
                 }
               />
