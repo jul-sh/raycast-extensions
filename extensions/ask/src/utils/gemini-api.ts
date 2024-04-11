@@ -8,7 +8,7 @@ export async function* promptStream(args: ApiArgs): AsyncGenerator<string, void,
   const model = genAI.getGenerativeModel({
     model: args.model,
     generationConfig: { temperature: args.temperature },
-  });
+  }, {apiVersion: "v1beta"});
 
   const result = await model.generateContentStream(`Instructions:\n${args.systemPrompt}\n\nMessage:\n${args.prompt}`);
 
