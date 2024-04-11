@@ -3,7 +3,7 @@ import { Chat, ChatViewProps } from "../type";
 import { AnswerDetailView } from "./answer-detail";
 import { EmptyView } from "./empty";
 
-export const ChatView = ({ data, question, conversation, use }: ChatViewProps) => {
+export const ChatView = ({ data, use }: ChatViewProps) => {
   const sortedChats = data.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
   return sortedChats.length === 0 ? (
